@@ -10,4 +10,113 @@ namespace AppBundle\Repository;
  */
 class PanierRepository extends \Doctrine\ORM\EntityRepository
 {
+     /**
+    * Recherche de la liste des paniers à traiter (ceux dont l'état est 'En cours de traitement')
+    *
+    * @return la liste des paniers à traiter
+    */
+    public function findList(){
+        
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT * FROM panier WHERE etat='En cours de traitement'");
+        $statement->execute();
+        $results = $statement->fetchAll();
+        return $results;
+    }
+    
+    /**
+    * Recherche des infos sur les produits dans un panier
+    *
+    * @param $numpanier pour identifier le panier.
+    *
+    * @return la liste des produits
+    */
+    public function findPruducts($numpanier){
+        
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT nomproduit, descriptif, prix, qte_cmd FROM produit p inner join produit_dans_panier pp ON p.numproduit=pp.produit WHERE pp.panier=:numpanier");
+        $statement->bindValue('numpanier', $numpanier);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        return $results;
+    }
+    
+    /**
+    * Livraison des produits (diminution de leurs quantités)
+    *
+    *      - si les qtés de tous les produits en stock suffisent pour la livraison alors on diminue les quantités et on change l'état du panier en "Traité"
+    *      - sinon on diminue les quantités des produits dont la quantité suffit et on remet leur quantités commandées à 0 (car ils ont été livrés). On ne change pas l'état du panier.
+    *
+    * @param $numpanier pour identifier le panier.
+    *
+    * @return le message du résultat de la livraison
+    */
+    public function deliverPruducts($numpanier){
+        
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        
+        // création d'une table temporaire contenant les numeros des produits et leurs nouvelles quantités
+        $view = $connection->prepare(""
+            . "CREATE TEMPORARY TABLE IF NOT EXISTS newQteTable AS "
+                . "SELECT p.numproduit, qte - qte_cmd AS newQte "
+                . "FROM produit p INNER JOIN produit_dans_panier pp "
+                . "ON p.numproduit=pp.produit "
+                . "WHERE pp.qte_cmd<=p.qte AND pp.panier=:numpanier");
+        $view->bindValue('numpanier', $numpanier);
+        $view->execute();
+        
+        // recherche des produits dont la quantité n'est pas suffisante pour le panier courant
+        $statement = $connection->prepare(""
+                . "SELECT p.numproduit, p.nomproduit, qte, qte_cmd "
+                . "FROM produit p INNER JOIN produit_dans_panier pp "
+                . "ON p.numproduit=pp.produit "
+                . "WHERE pp.qte_cmd>p.qte AND pp.panier=:numpanier");
+        $statement->bindValue('numpanier', $numpanier);
+        $statement->execute();
+        $results = $statement->fetchAll();
+        if (count($results) == 0) // si tous les produits suffisent
+        {
+            // mise à jour des quantités des produits en stock à l'aide de la table temporaire
+            $updateProduit = $connection->prepare(""
+                . "UPDATE produit p "
+                    . "INNER JOIN newQteTable v "
+                    . "ON p.numproduit=v.numproduit "
+                . "SET p.qte=v.newQte");
+            $updateProduit->execute();
+            
+            // mise à jour de l'état du panier
+            $updatePanier = $connection->prepare("UPDATE panier SET etat='Traité' WHERE numpanier=:numpanier");
+            $updatePanier->bindValue('numpanier', $numpanier);
+            $updatePanier->execute();
+            
+            $message = "Livraison a réussi.";
+        }
+        else
+        {
+            // mise à jour des quantités des produits en stock à l'aide de la table temporaire
+            $updateProduit = $connection->prepare(""
+                . "UPDATE produit p "
+                    . "INNER JOIN newQteTable v "
+                    . "ON p.numproduit=v.numproduit "
+                . "SET p.qte=v.newQte "
+                . "WHERE v.newQte>=0");
+            $updateProduit->execute();
+            
+            // mise à jour des quantités des produits dans le panier à l'aide de la table temporaire
+            $updatePanier = $connection->prepare(""
+                . "UPDATE produit_dans_panier pp "
+                    . "INNER JOIN newQteTable v "
+                    . "ON pp.produit=v.numproduit "
+                . "SET pp.qte_cmd=0 "
+                . "WHERE v.newQte>=0 AND pp.panier=:numpanier");
+            $updatePanier->bindValue('numpanier', $numpanier);
+            $updatePanier->execute();
+            
+            $message = "Rupture de stock. Seulement les produits dont la quantité en stock est suffisante seront livrés.";
+        }
+        return $message;
+    }
 }

@@ -1,0 +1,64 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Gestion des paniers
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    {% if message is not empty %}
+        <div class='alert alert-success'>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                <i class='fa fa-times fa-lg'></i>
+            </a>
+
+            {{ message }}
+        </div>
+    {% endif %}
+    
+    {% if paniers %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Etat</th>
+                <th>Utilisateur</th>
+                <th>Consultation</th>
+                <th>Livraison</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for panier in paniers %}
+            <tr>
+                <td>{{ panier.numpanier }}</td>
+                <td>{{ panier.etat }}</td>
+                <td>{{ panier.login }}</td>
+                <td>
+                <div class="item-actions">
+                    <a href="{{ path('panier', { numpanier: panier.numpanier }) }}" 
+                       class="btn btn-sm btn-primary" title="Consulter">
+                        <i class="fa fa-eye"></i>
+                    </a> 
+                </div>
+                </td>
+                <td>
+                <div class="item-actions">
+                    <a href="{{ path('livraison', { numpanier: panier.numpanier }) }}" 
+                       class="btn btn-sm btn-primary" title="Livrer">
+                        <i class="fa fa-check-circle"></i>
+                    </a> 
+                </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucun panier à traiter.
+    {% endif %}
+    <a href="{{path('interface_magasinier')}}">retour accueil</a>
+{% endblock %}

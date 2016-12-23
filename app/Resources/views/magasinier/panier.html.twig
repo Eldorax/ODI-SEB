@@ -1,0 +1,38 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Panier
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    {% if produits %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Descritption</th>
+                <th>Prix</th>
+                <th>Quanitité commandée</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nomproduit }}</td>
+                <td>{{ produit.descriptif }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>{{ produit.qte_cmd }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucun produit dans le panier (c'est pas normal).
+    {% endif %}
+    <a href="{{path('paniers')}}">retour accueil</a>
+{% endblock %}

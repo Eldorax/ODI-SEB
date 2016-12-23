@@ -142,6 +142,27 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
 
         }
 
+        if (0 === strpos($pathinfo, '/magasinier')) {
+            if (0 === strpos($pathinfo, '/magasinier/panier')) {
+                // paniers
+                if (0 === strpos($pathinfo, '/magasinier/paniers') && preg_match('#^/magasinier/paniers(?:/(?P<message>[^/]++))?$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'paniers')), array (  '_controller' => 'AppBundle\\Controller\\MagasinierController::paniersAction',  'message' => '',));
+                }
+
+                // panier
+                if (preg_match('#^/magasinier/panier/(?P<numpanier>[^/]++)$#s', $pathinfo, $matches)) {
+                    return $this->mergeDefaults(array_replace($matches, array('_route' => 'panier')), array (  '_controller' => 'AppBundle\\Controller\\MagasinierController::panierAction',  'message' => '',));
+                }
+
+            }
+
+            // livraison
+            if (0 === strpos($pathinfo, '/magasinier/livraison') && preg_match('#^/magasinier/livraison/(?P<numpanier>[^/]++)$#s', $pathinfo, $matches)) {
+                return $this->mergeDefaults(array_replace($matches, array('_route' => 'livraison')), array (  '_controller' => 'AppBundle\\Controller\\MagasinierController::livraisonAction',  'message' => '',));
+            }
+
+        }
+
         if (0 === strpos($pathinfo, '/auth')) {
             // auth
             if (rtrim($pathinfo, '/') === '/auth/form') {

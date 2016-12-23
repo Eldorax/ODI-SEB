@@ -31,6 +31,20 @@ listproduit:
     path: /produits/list/{message}
     defaults: {_controller: AppBundle:Produit:listProduit, message: ''}
 
+paniers:
+    path: /magasinier/paniers/{message}
+    defaults: {_controller: AppBundle:Magasinier:paniers, message: ''}  
+
+panier:
+    path: /magasinier/panier/{numpanier}
+    defaults: {_controller: AppBundle:Magasinier:panier, message: ''}  
+
+livraison:
+    path: /magasinier/livraison/{numpanier}
+    defaults: {_controller: AppBundle:Magasinier:livraison, message: ''}
+
+
+
 
 
 auth:
