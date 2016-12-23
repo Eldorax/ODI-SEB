@@ -1,0 +1,13 @@
+AppBundle\Entity\Produit:
+    properties:
+        qte:
+            - Range:
+                min: 0
+        qtemin:
+            - Range:
+                min: 0
+        prix:
+            - Range:
+                min: 0
+        peremption:
+             - GreaterThanOrEqual: today

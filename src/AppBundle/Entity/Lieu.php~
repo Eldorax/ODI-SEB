@@ -1,0 +1,175 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\Constraints as LieuAssert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
+/**
+ * Lieu
+ * @UniqueEntity(fields="nom", message="Ce lieu existe déjà")
+ */
+class Lieu
+{
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @Assert\Length(max=15)
+     * @Assert\Expression(
+     *      "this.getLongitude() < 180 and value != ''"
+     * )
+     */
+    private $nom;
+
+    /**
+     * @var string
+     * @Assert\Range(min = -180, max = 180, minMessage="{{ limit }} < -180")
+     * @Assert\NotNull()
+     */
+    private $longitude;
+
+    /**
+     * @var string
+     * @Assert\Range(min = 0, max = 90)
+     */
+    private $latitude;
+
+    /**
+     * @var \DateTime
+     * @Assert\DateTime()
+     * @LieuAssert\PastDate()
+     */
+    private $dateajout;
+
+    /**
+     * @var boolean
+     * @Assert\Range(min=0, max=1)
+     */
+    private $supprime;
+
+    public function __construct() {
+        $this->dateajout = new \DateTime();
+    }
+
+    /**
+     * Set nom
+     *
+     * @param string $nom
+     *
+     * @return Lieu
+     */
+    public function setNom($nom)
+    {
+        $this->nom = $nom;
+
+        return $this;
+    }
+
+    /**
+     * Get nom
+     *
+     * @return string
+     */
+    public function getNom()
+    {
+        return $this->nom;
+    }
+
+    /**
+     * Set longitude
+     *
+     * @param string $longitude
+     *
+     * @return Lieu
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * Get longitude
+     *
+     * @return string
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set latitude
+     *
+     * @param string $latitude
+     *
+     * @return Lieu
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * Get latitude
+     *
+     * @return string
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * Set dateajout
+     *
+     * @param \DateTime $dateajout
+     *
+     * @return Lieu
+     */
+    public function setDateajout($dateajout)
+    {
+        $this->dateajout = $dateajout;
+
+        return $this;
+    }
+
+    /**
+     * Get dateajout
+     *
+     * @return \DateTime
+     */
+    public function getDateajout()
+    {
+        return $this->dateajout;
+    }
+
+    /**
+     * Set supprime
+     *
+     * @param boolean $supprime
+     *
+     * @return Lieu
+     */
+    public function setSupprime($supprime)
+    {
+        $this->supprime = $supprime;
+
+        return $this;
+    }
+
+    /**
+     * Get supprime
+     *
+     * @return boolean
+     */
+    public function getSupprime()
+    {
+        return $this->supprime;
+    }
+}
+

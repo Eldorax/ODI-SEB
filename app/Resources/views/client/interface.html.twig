@@ -1,0 +1,17 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Interface Client
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    <ul>
+        <li> <a href="{{ path('listproduit') }}">Liste des produits </a> </li>
+        <li> <a href="{{ path('new_panier')  }}">Nouveau panier </a> </li>
+        <li> <a href="{{ path('panier_list') }}" >Mes paniers </a> </li>
+    </ul>
+{% endblock %}

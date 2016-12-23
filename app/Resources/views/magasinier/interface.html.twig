@@ -1,0 +1,19 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Interface Magasinier
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    <ul>
+        <li> <a href="{{ path('listproduit')   }}">Liste des produits </a> </li>
+        <li> <a href="{{ path('ajoutproduit')  }}">Ajout de produit </a> </li>
+        <li> <a href="{{ path('modifierstock') }}">Gestion des stocks </a> </li>
+        <li> <a href="{{ path('disconnect')    }}">Gestion des paniers </a> </li>
+        <li> <a href="{{ path('alerte')        }}">Gestion des alertes </a> </li>
+    </ul>
+{% endblock %}

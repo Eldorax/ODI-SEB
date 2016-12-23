@@ -1,0 +1,112 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Alerte produits
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    
+    {% if msg is not empty %}
+       <div class='alert alert-success'>
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">
+               <i class='fa fa-times fa-lg'></i>
+           </a>
+
+          {{ msg }}
+       </div>
+    {% endif %}
+    
+    <h2><i class="fa fa-users fa-lg"></i> Alerte de stock minimum</h2>
+
+    {% if produitsqte %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Descriptif</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Quantité min</th>
+                <th>Prix</th>
+                <th>Péremption</th>
+                <th>Photo</th>
+                <th>Visible</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produitsqte %}
+            <tr>
+                <td>{{ produit.numproduit }}</td>
+                <td>{{ produit.nomproduit }}</td>
+                <td>{{ produit.descriptif }}</td>
+                <td>{{ produit.categorie  }}</td>
+                <td>{{ produit.qte        }}</td>
+                <td>{{ produit.qtemin     }}</td>
+                <td>{{ produit.prix       }}</td>
+                <td>{{ produit.peremption|date('Y-m-d') }}</td>
+                <td><img src="{{ produit.photo }}"></td>
+                {% if produit.visible == 1 %}
+                    <td>oui</td>
+                {% else %}
+                    <td>non</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucunne produit en manque de stock.
+    {% endif %}
+    
+    <h2><i class="fa fa-users fa-lg"></i> Alerte de péremption</h2>
+    
+    {% if produitsperim %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Descriptif</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Quantité min</th>
+                <th>Prix</th>
+                <th>Péremption</th>
+                <th>Photo</th>
+                <th>Visible</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produitsperim %}
+            <tr>
+                <td>{{ produit.numproduit }}</td>
+                <td>{{ produit.nomproduit }}</td>
+                <td>{{ produit.descriptif }}</td>
+                <td>{{ produit.categorie  }}</td>
+                <td>{{ produit.qte        }}</td>
+                <td>{{ produit.qtemin     }}</td>
+                <td>{{ produit.prix       }}</td>
+                <td>{{ produit.peremption|date('Y-m-d') }}</td>
+                <td><img src="{{ produit.photo }}"></td>
+                {% if produit.visible == 1 %}
+                    <td>oui</td>
+                {% else %}
+                    <td>non</td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucunne produit périmés.
+    {% endif %}
+    </br>
+    <a href="{{path('interface_magasinier')}}">retour accueil</a>
+{% endblock %}

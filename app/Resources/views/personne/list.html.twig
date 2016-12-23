@@ -1,0 +1,68 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Personnes
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+<h1><i class="fa fa-users fa-lg"></i> Personnes</h1>
+
+    {% if msg is not empty %}
+        <div class='alert alert-success'>
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">
+                <i class='fa fa-times fa-lg'></i>
+            </a>
+
+            {{ msg }}
+        </div>
+    {% endif %}
+    
+    {% if personnes %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Genre</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th><i class="fa fa-envelope fa-lg"></i></th>
+                <th>Abonnement</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for personne in personnes %}
+            <tr>
+                <td>{% if personne.genre == 'M' %}
+                        <i class="fa fa-male fa-lg"></i>
+                    {% elseif personne.genre =='Mme' %}
+                        <i class="fa fa-female fa-lg"></i>
+                    {% else %}
+                        <i class="fa fa-question-circle-o fa-lg"></i>
+                    {% endif %}
+                </td>
+                <td>{{ personne.nompersonne }}</td>
+                <td>{{ personne.prenompersonne }}</td>
+                <td>{{ personne.email }}</td>
+                <td>{{ personne.personneabonnement }}</td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('updatepersonne', { nompersonne: personne.nompersonne, prenompersonne: personne.prenompersonne }) }}" 
+                           class="btn btn-sm btn-primary" title="modifier">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </a> 
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucune personne dans la base.
+    {% endif %}
+{% endblock %}
+    

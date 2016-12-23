@@ -1,0 +1,58 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Produits en stock
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    
+    {% if msg is not empty %}
+       <div class='alert alert-success'>
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">
+               <i class='fa fa-times fa-lg'></i>
+           </a>
+
+          {{ msg }}
+       </div>
+    {% endif %}
+    <h1><i class="fa fa-arrow-circle-right fa-lg"></i> Produits</h1>
+
+    {% if produits %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Descriptif</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Péremption</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nomproduit }}</td>
+                <td>{{ produit.descriptif }}</td>
+                <td>{{ produit.categorie  }}</td>
+                <td>{{ produit.qte        }}</td>
+                <td>{{ produit.prix       }}€</td>
+                <td>{{ produit.peremption|date('Y-m-d') }}</td>
+                <td><img src="{{ produit.photo }}"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucun produit disponible.
+    {% endif %}
+    {% if CheckConnection.auth == true %}
+        <a href="{{path('interface_client')}}">retour accueil</a>
+    {% endif %}
+{% endblock %}

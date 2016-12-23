@@ -1,0 +1,110 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Commander
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    {% if msg is not empty %}
+       <div class='alert alert-success'>
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">
+               <i class='fa fa-times fa-lg'></i>
+           </a>
+
+          {{ msg }}
+       </div>
+    {% endif %}
+    
+    <h1> <i class="fa fa-arrow-circle-right fa-lg"></i> Produits disponible </h1>
+    {% if produits %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Descriptif</th>
+                <th>Catégorie</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Péremption</th>
+                <th>Photo</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nomproduit }}</td>
+                <td>{{ produit.descriptif }}</td>
+                <td>{{ produit.categorie  }}</td>
+                <td>{{ produit.qte        }}</td>
+                <td>{{ produit.prix       }}€</td>
+                <td>{{ produit.peremption|date('Y-m-d') }}</td>
+                <td><img src="{{ produit.photo }}"></td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('add_produit_panier',
+                                    { numpanier: numpanier, 
+                                      numproduit: produit.numproduit
+                                    })
+                                 }}" 
+                           class="btn btn-sm btn-primary" title="Ajouter">
+                            <i class="fa fa-shopping-cart"></i>
+                        </a> 
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+       Aucun produit disponible.
+    {% endif %}
+    
+    
+     <h1> <i class="fa fa-shopping-basket fa-lg"></i> Panier actuel </h1>
+    {% if produit_dans_panier %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in produit_dans_panier %}
+            <tr>
+                <td>{{ p.numproduit.nomproduit }}</td>
+                <td>{{ p.qtecmd                }}</td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('delete_produit_panier',
+                                    { numpanier: p.numpanier.numpanier, 
+                                      numproduit: p.numproduit.numproduit
+                                    })
+                                 }}"
+                            class="btn btn-sm btn-primary" title="Supprimer">
+                            <i class="fa fa-trash-o"></i>
+                        </a> 
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+       Aucun produit dans le panier.
+    {% endif %}
+    </br>
+    <a href="{{ path('valid_panier',
+                    { numpanier: numpanier })
+                 }}"> Valider le panier
+           
+    </a> 
+    </br>
+
+    <a href="{{path('interface_client')}}">retour accueil</a>
+{% endblock %}

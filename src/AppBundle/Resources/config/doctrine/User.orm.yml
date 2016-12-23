@@ -1,0 +1,27 @@
+AppBundle\Entity\User:
+    repositoryClass: AppBundle\Repository\UserRepository
+    type: entity
+    table: user
+    id:
+        login:
+            type: string
+    fields:
+        password:
+            type: string
+            nullable: false
+        email:
+            type: string
+            nullable: false
+        genre:
+            type: string
+            columnDefinition: ENUM('M', 'Mme')
+            nullable: false
+        nom:
+            type: string
+            nullable: false
+        prenom:
+            type: string
+            nullable: false
+        datenaissance:
+            type: date
+            nullable: false

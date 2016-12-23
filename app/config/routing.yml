@@ -1,0 +1,82 @@
+# pour pouvoir faire du routage par annotation dans les controlleurs
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+home:
+    path: /
+    defaults: {_controller: AppBundle:Default:home}
+
+interface_magasinier:
+    path: /magasinier/interface
+    defaults: {_controller: AppBundle:Magasinier:interface}    
+
+ajoutproduit:
+    path: /produits/ajouter/{message}
+    defaults: {_controller: AppBundle:Produit:ajouterProduit, message: ''}
+    
+modifierstock:
+    path: /produits/modifier/{message}
+    defaults: {_controller: AppBundle:Produit:modifierProduit, message: ''}
+    
+telechargement:
+    path: /produits/telechargement
+    defaults: {_controller: AppBundle:Produit:telechargerProduit, message: ''}
+    
+alerte:
+    path: /produits/alerte
+    defaults: {_controller: AppBundle:Produit:alerteProduit, message: ''}
+
+listproduit:
+    path: /produits/list/{message}
+    defaults: {_controller: AppBundle:Produit:listProduit, message: ''}
+
+
+
+auth:
+    path: /auth/form/
+    defaults: {_controller: AppBundle:User:auth}
+    
+disconnect:
+    path: /auth/disconnect
+    defaults: {_controller: AppBundle:User:disconnect}
+
+
+
+
+
+interface_client:
+    path: /client/interface/{message}
+    defaults: {_controller: AppBundle:Client:interface, message: ''}
+
+panier_list:
+    path: /panier/list/{message}
+    defaults: {_controller: AppBundle:Client:panierList, message: ''}
+    
+panier_mod:
+    path: /client/commander/{numpanier}/{message}
+    defaults: {_controller: AppBundle:Client:ModPanier, message: ''}
+    
+delete_panier:
+    path: /panier/delete/{numpanier}
+    defaults: {_controller: AppBundle:Client:DeletePanier, numpanier: 0}
+    
+valid_panier:
+    path: /panier/valid/{numpanier}
+    defaults: {_controller: AppBundle:Client:validPanier, numpanier: 0}
+    
+voir_panier:
+    path: /panier/voir/{numpanier}
+    defaults: {_controller: AppBundle:Client:voirPanier, numpanier: 0}
+    
+new_panier:
+    path: /panier/create
+    defaults: {_controller: AppBundle:Client:newPanier}
+    
+delete_produit_panier:
+    path: /panier/delete/{numpanier}/{numproduit}
+    defaults: {_controller: AppBundle:Client:DeleteproduitPanier}
+    
+add_produit_panier:
+    path: /panier/add/{numpanier}/{numproduit}
+    defaults: {_controller: AppBundle:Client:addProduitPanier}

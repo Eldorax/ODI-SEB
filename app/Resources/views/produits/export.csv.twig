@@ -1,0 +1,4 @@
+Nom produit, descriptif, categorie, quantite, quantité minimal, prix, date de peremption, visible par les clients
+{% for produit in produits %}
+    {{produit.nomproduit}}, {{produit.descriptif}}, {{produit.categorie}}, {{produit.qte}}, {{produit.qtemin}}, {{produit.prix}}, {{produit.peremption|date('Y-m-d')}}, {% if produit.visible == 1 %}oui{% else %}non{% endif %};
+{% endfor %}

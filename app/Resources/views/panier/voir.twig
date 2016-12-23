@@ -1,0 +1,40 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Commander
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+
+    <h1> <i class="fa fa-shopping-basket fa-lg"></i> Panier actuel </h1>
+    
+    {% if produit_dans_panier %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in produit_dans_panier %}
+            <tr>
+                <td>{{ p.numproduit.nomproduit }}</td>
+                <td>{{ p.qtecmd                }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+       Aucun produit dans le panier.
+    {% endif %}
+
+    </br>
+
+    <a href="{{path('interface_client')}}">retour accueil</a>
+{% endblock %}

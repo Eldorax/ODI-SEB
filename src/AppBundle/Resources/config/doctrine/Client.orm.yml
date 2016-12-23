@@ -1,0 +1,17 @@
+AppBundle\Entity\Client:
+    repositoryClass: AppBundle\Repository\ClientRepository
+    type: entity
+    table: client
+    id:
+        login:
+            associationKey: true
+    fields:
+        fidelite:
+            type: integer
+            nullable: false
+    manyToOne:
+        login:
+            targetEntity: User
+            joinColumns:
+                user:
+                    referencedColumnName: login

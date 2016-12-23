@@ -1,0 +1,20 @@
+AppBundle\Entity\Magasinier:
+    repositoryClass: AppBundle\Repository\MagasinierRepository
+    type: entity
+    table: magasinier
+    id:
+        login:
+            associationKey: true
+    fields:
+        anciennete:
+            type: integer
+            nullable: false
+        salaire:
+            type: integer
+            nullable: false 
+    manyToOne:
+        login:
+            targetEntity: User
+            joinColumns:
+                user:
+                    referencedColumnName: login

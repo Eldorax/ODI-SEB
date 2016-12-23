@@ -1,0 +1,28 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Authentification
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+       
+{% block body %}
+    
+    {% if msg is not empty %}
+       <div class='alert alert-success'>
+           <a href="#" class="close" data-dismiss="alert" aria-label="close">
+               <i class='fa fa-times fa-lg'></i>
+           </a>
+
+           {{ msg }}
+       </div>
+    {% endif %}
+    
+    {{ form_start(form)  }}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form)    }}
+{% endblock %}

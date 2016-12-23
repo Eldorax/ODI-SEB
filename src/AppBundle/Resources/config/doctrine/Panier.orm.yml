@@ -1,0 +1,23 @@
+AppBundle\Entity\Panier:
+    repositoryClass: AppBundle\Repository\PanierRepository
+    type: entity
+    table: panier
+    id:
+        numpanier:
+            type: integer
+            generator:
+                strategy:
+                    IDENTITY
+    fields:
+        etat:
+            type: string
+            nullable: false
+            columnDefinition: ENUM('Non validé', 'En cours de traitement', 'Traité',)
+        login:
+            associationKey: true
+    manyToOne:
+    login:
+        targetEntity: User
+        joinColumns:
+            user:
+                referencedColumnName: login

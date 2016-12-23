@@ -1,0 +1,34 @@
+AppBundle\Entity\Produit:
+    repositoryClass: AppBundle\Repository\ProduitRepository
+    type: entity
+    table: produit
+    id:
+        numproduit:
+            type: integer
+    fields:
+        nomproduit:
+            type: string
+            nullable: false
+        descriptif:
+            type: string
+        categorie:
+            type: string
+            columnDefinition: ENUM('papeterie', 'plastique')
+            nullable: false
+        qte:
+            type: integer
+            nullable: false
+        qtemin:
+            type: integer
+            nullable: false
+        prix:
+            type: float
+            nullable: false
+        peremption:
+            type: datetime
+            nullable: false
+        photo:
+            type: string
+        visible:
+            type: boolean
+            nullable: false

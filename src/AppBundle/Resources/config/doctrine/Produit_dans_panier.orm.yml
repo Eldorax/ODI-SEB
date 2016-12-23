@@ -1,0 +1,24 @@
+AppBundle\Entity\Produit_dans_panier:
+    repositoryClass: AppBundle\Repository\Produit_dans_panierRepository
+    type: entity
+    table: produit_dans_panier
+    id:
+        numpanier:
+            associationKey: true
+        numproduit:
+            associationKey: true
+    fields:
+        qte_cmd:
+            type: integer
+            nullable: false
+    manyToOne:
+        numpanier:
+            targetEntity: Panier
+            joinColumns:
+                panier:
+                    referencedColumnName: numpanier
+        numproduit:
+            targetEntity: Produit
+            joinColumns:
+                produit:
+                    referencedColumnName: numproduit

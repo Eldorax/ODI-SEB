@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+   <head>
+    {% if CheckConnection.auth == false %}
+        <a href="{{ path('auth') }}">connexion </a> 
+    {% else %}
+        <a href="{{ path('disconnect') }}">Déconnexion </a>
+    {% endif %}
+    
+       <meta charset='UTF-8'>
+       {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bundles/DataTables/datatables.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/normalize.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+        {% endblock %}
+       
+        <title> {% block title %} Titre {% endblock %} </title>
+        {% block head %}{% endblock %}
+   </head>
+
+   <body>
+           <p>
+               {% block body %}
+                    Default text.<br> 
+                    Message : {{ msg }}
+               {% endblock %}
+           </p>
+   </body>
+
+   <footer>
+       <p>
+           {% block PiedDePage %}
+           {% endblock %}
+       </p>
+   </footer>
+
+</html>
+
+
+
+
+{% block javascripts %}
+    <script src="{{ asset('bundles/jQuery-2.2.3/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('bundles/jquery-sizzle/src/sizzle.js') }}"></script>
+    <script src="{{ asset('bundles/highlight.pack.js') }}"></script>
+    <script src="{{ asset('bundles/Momentjs/moment.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-datetime.js') }}"></script>
+    <script src="{{ asset('bundles/DataTables/datatables.min.js') }}"></script>
+{% endblock %}

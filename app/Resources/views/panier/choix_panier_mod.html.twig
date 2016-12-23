@@ -1,0 +1,80 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+   Mes paniers
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/projet.css') }}">
+{% endblock %}
+        
+{% block body %}
+    
+    {% if msg is not empty %}
+       <div class='alert alert-success'>
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">
+               <i class='fa fa-times fa-lg'></i>
+           </a>
+
+          {{ msg }}
+       </div>
+    {% endif %}
+    
+    <h1><i class="fa fa-shopping-basket fa-lg"></i> Paniers</h1>
+
+    {% if paniers %}
+    <table class="table table-striped" id='tab'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Etat</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for panier in paniers %}
+            <tr>
+                <td>{{ panier.numpanier }}</td>
+                <td>{{ panier.etat }}</td>
+                <td>
+                    <div class="item-actions">
+                        <a href="{{ path('voir_panier', 
+                                    { numpanier: panier.numpanier }) }}" 
+                           class="btn btn-sm btn-primary" title="Voir">
+                            <i class="fa fa-info fa-lg"></i>
+                        </a> 
+                    </div>
+                </td>
+                <td>
+                {% if panier.etat == "Non validé" %}
+                    <div class="item-actions">
+                        <a href="{{ path('panier_mod', 
+                                    { numpanier: panier.numpanier }) }}" 
+                           class="btn btn-sm btn-primary" title="modifier">
+                            <i class="fa fa-pencil fa-lg"></i>
+                        </a> 
+                    </div>
+               
+                {% endif %}
+                </td>
+                <td>
+                    {% if panier.etat == "Non validé" %}
+                        <div class="item-actions">
+                            <a href="{{ path('delete_panier', 
+                                        { numpanier: panier.numpanier }) }}" 
+                               class="btn btn-sm btn-primary" title="Supprimer">
+                                <i class="fa fa-trash-o fa-lg"></i>
+                            </a> 
+                        </div>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+        
+    {% else %}
+       Aucun panier créé.
+    {% endif %}
+    <a href="{{path('interface_client')}}">retour accueil</a>
+{% endblock %}
